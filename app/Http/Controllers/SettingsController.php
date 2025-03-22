@@ -27,7 +27,12 @@ class SettingsController extends Controller
     /**
      * SettingsController constructor.
      */
-    public function __construct()
+    public function showCsvPage()
+    {
+        return view('settings.importExport');
+    }
+
+     public function __construct()
     {
         $this->middleware('user.is.admin', ['only' => ['index']]);
         $this->middleware('is.demo', ['except' => ['index']]);

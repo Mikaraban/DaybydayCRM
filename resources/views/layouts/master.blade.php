@@ -115,6 +115,7 @@
                     </a>
                 @endif
             </div>
+
             <a href="#sales" class=" list-group-item" data-toggle="collapse" data-parent="#MainMenu"><i
                 class="fa fa-dollar sidebar-icon"></i><span id="menu-txt">{{ __('Sales') }}</span>
                 <i class="icon ion-md-arrow-dropup arrow-side sidebar-arrow"></i></a>
@@ -126,6 +127,7 @@
                 <i class="bullet-point"><span></span></i> {{ __('Products') }}
             </a>
             </div>
+
             @if(Entrust::can('calendar-view'))
                 <a href="#appointments" class="list-group-item" data-toggle="collapse" data-parent="#MainMenu"><i
                             class="fa fa-calendar sidebar-icon"></i><span id="menu-txt">{{ __('Appointments') }}</span>
@@ -136,6 +138,7 @@
                                 class="bullet-point"><span></span></i> {{ __('Calendar') }}</a>
                 </div>
             @endif
+
             <a href="#hr" class=" list-group-item" data-toggle="collapse" data-parent="#MainMenu"><i
                         class="fa fa-handshake-o sidebar-icon"></i><span id="menu-txt">{{ __('HR') }}</span>
                 <i class="icon ion-md-arrow-dropup arrow-side sidebar-arrow"></i></a>
@@ -172,6 +175,18 @@
                                 class="bullet-point"><span></span></i> {{ __('Integrations') }}</a>
                 </div>
             @endif
+                    
+            <a href="#data" class=" list-group-item" data-toggle="collapse" data-parent="#MainMenu"><i
+                    class="fa fa-database sidebar-icon"></i><span id="menu-txt">{{ __('Data Management') }}</span>
+                <i class="icon ion-md-arrow-dropup arrow-side sidebar-arrow"></i></a>
+            <div class="collapse" id="data">
+                <a href="{{ route('data.cleanup') }}"
+                    class="list-group-item childlist" method="GET" onsubmit="return confirm('Are you sure you want to delete all data? This action cannot be undone.');"> <i
+                        class="bullet-point"><span></span></i> {{ __('Delete') }}</a>
+                <a href="{{ route('data.import.data') }}"
+                    class="list-group-item childlist"> <i
+                        class="bullet-point"><span></span></i> {{ __('Import') }}</a>
+            </div>
         </div>
     </nav>
 

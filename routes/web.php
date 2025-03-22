@@ -9,6 +9,25 @@
 | to using a Closure or controller method. Build something great!
 |
 */
+
+Route::group(['prefix' => 'data'], function () {
+    Route::get('/cleanup', 'DatabaseCleanupController@deleteAllData')->name('data.cleanup');
+    // Route::get('/import-page', [SettingsController::class, 'showCsvPage'])->name('import.data');
+    Route::post('/csv-import', 'CsvImportController@import')->name('data.csv.import');
+    Route::get('/import-page', 'CsvImportController@showImportForm')->name('data.import.data');
+});
+
+
+Route::group(['prefix' => 'impoexpo'], function () {
+    Route::get('export/excel', 'DatabaseImportController@exportExcel')->name('export.excel');
+    Route::get('export/csv', 'DatabaseImportController@exportCsv')->name('export.csv');
+    Route::post('import/csv', 'DatabaseImportController@importCsv')->name('import.csv');
+    Route::get('settings', 'DatabaseImportController@showDatabaseSettings')->name('settings.database');
+    Route::post('delete-all-data', 'DatabaseImportController@deleteAllData')->name('delete.all.data');
+});
+
+
+
 Route::auth();
 Route::get('/logout', 'Auth\LoginController@logout');
 Route::group(['middleware' => ['auth']], function () {
