@@ -6,7 +6,7 @@
 |
 | This file is where you may define all of the routes that are handled
 | by your application. Just tell Laravel the URIs it should respond
-| to using a Closure or controller method. Build something great!
+| to using a Closure or controller method. Build something great!o
 |
 */
 
@@ -15,6 +15,16 @@ Route::group(['prefix' => 'data'], function () {
     // Route::get('/import-page', [SettingsController::class, 'showCsvPage'])->name('import.data');
     Route::post('/csv-import', 'CsvImportController@import')->name('data.csv.import');
     Route::get('/import-page', 'CsvImportController@showImportForm')->name('data.import.data');
+    Route::get('/new-app', 'PagesController@redirectToNewApp')->name('data.newApp');
+});
+
+Route::group(['prefix' => 'dataSpring'], function () {
+    Route::get('/getTotals', 'ForNewAppController@getTotals')->name('dashboardTotals');
+    Route::get('/getAllOffersJSON', 'ForNewAppController@getAllOffersJSON')->name('allOffers');
+    Route::get('/getAllClientsJSON', 'ForNewAppController@getAllClientsJSON')->name('allClients');
+    Route::get('/getAllTasksJSON', 'ForNewAppController@getAllTasksJSON')->name('allTasks');
+    Route::get('/getAllInvoicesJSON', 'ForNewAppController@getAllInvoicesJSON')->name('allIncoices');
+    Route::get('/getAllPaymentsJSON', 'ForNewAppController@getAllPaymentsJSON')->name('allPayments');
 });
 
 
@@ -37,6 +47,7 @@ Route::group(['middleware' => ['auth']], function () {
      */
     Route::get('/', 'PagesController@dashboard');
     Route::get('dashboard', 'PagesController@dashboard')->name('dashboard');
+    
 
     /**
      * Users
@@ -204,6 +215,7 @@ Route::group(['middleware' => ['auth']], function () {
      */
     Route::group(['prefix' => 'payment'], function () {
         Route::delete('/{payment}', 'PaymentsController@destroy')->name('payment.destroy');
+        Route::delete('/id/{payment}', 'PaymentsController@destroyWithId')->name('payment.destroyWithId');
         Route::post('/add-payment/{invoice}', 'PaymentsController@addPayment')->name('payment.add');
     });
 

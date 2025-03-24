@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+        }
+        table {
+            width: 100%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+        td {
+            background-color: #f9f9f9;
+        }
+        tr:hover td {
+            background-color: #f1f1f1;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .table-header {
+            margin-top: 30px;
+            font-size: 1.5rem;
+            text-align: center;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="table-header">
+            <h2>Task Information</h2>
+        </div>
+        <a href="index.html" class="back-button">
+            <i class="fas fa-arrow-left"></i> Back to Home
+        </a>
+        <table>
+            <thead>
+                <tr>
+                    <th>Task ID</th>
+                    <th>External ID</th>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Status ID</th>
+                    <th>User Assigned ID</th>
+                    <th>User Created ID</th>
+                    <th>Client ID</th>
+                    <th>Project ID</th>
+                    <th>Deadline</th>
+                    <th>Deleted At</th>
+                    <th>Created At</th>
+                    <th>Updated At</th>
+                </tr>
+            </thead>
+            <tbody id="taskData">
+                <!-- Data will be populated by JavaScript -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        // Fetch task data from API
+        fetch('http://localhost:7070/tasks') // Change this URL to the endpoint that returns task data
+            .then(response => response.json())
+            .then(data => {
+                const tbody = document.getElementById('taskData');
+                data.forEach(task => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${task.id || 'N/A'}</td>
+                        <td>${task.externalId || 'N/A'}</td>
+                        <td>${task.title || 'N/A'}</td>
+                        <td>${task.description || 'N/A'}</td>
+                        <td>${task.statusId || 'N/A'}</td>
+                        <td>${task.userAssignedId || 'N/A'}</td>
+                        <td>${task.userCreatedId || 'N/A'}</td>
+                        <td>${task.clientId || 'N/A'}</td>
+                        <td>${task.projectId || 'N/A'}</td>
+                        <td>${task.deadline ? new Date(task.deadline).toLocaleDateString() : 'N/A'}</td>
+                        <td>${task.deletedAt ? new Date(task.deletedAt).toLocaleString() : 'N/A'}</td>
+                        <td>${task.createdAt ? new Date(task.createdAt).toLocaleString() : 'N/A'}</td>
+                        <td>${task.updatedAt ? new Date(task.updatedAt).toLocaleString() : 'N/A'}</td>
+                    `;
+                    tbody.appendChild(row);
+                });
+            })
+            .catch(error => console.error('Error fetching task data:', error));
+    </script>
+</body>
+</html>

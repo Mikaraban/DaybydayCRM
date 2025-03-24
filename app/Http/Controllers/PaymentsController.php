@@ -47,6 +47,39 @@ class PaymentsController extends Controller
         return redirect()->back();
     }
 
+    public function destroyWithId($payment_id)
+    {
+        // Vérifiez si l'utilisateur a les permissions nécessaires
+        if (!auth()->user()->can('payment-delete')) {
+            session()->flash('flash_message', __("You don't have permission to delete a payment"));
+            return redirect()->back();
+        }
+
+        // Rechercher le paiement à l'aide des deux IDs
+        $payment = Payment::where('id', $payment_id)
+                        ->first();
+
+        // Si le paiement n'existe pas, retournez une erreur
+        if (!$payment) {
+            session()->flash('flash_message', __("Payment not found or invalid IDs provided"));
+            return redirect()->back();
+        }
+
+        // Initialiser l'intégration pour supprimer le paiement via une API externe
+        $api = Integration::initBillingIntegration();
+        if ($api) {
+            $api->deletePayment($payment);
+        }
+
+        // Supprimer le paiement de la base de données
+        $payment->delete();
+
+        // Afficher un message de succès
+        session()->flash('flash_message', __('Payment successfully deleted'));
+        return redirect()->back();
+    }
+
+
     public function addPayment(PaymentRequest $request, Invoice $invoice)
     {
         if (!$invoice->isSent()) {

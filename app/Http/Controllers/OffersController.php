@@ -102,4 +102,5 @@ class OffersController extends Controller
 
         return redirect()->back();
     }
+
 }

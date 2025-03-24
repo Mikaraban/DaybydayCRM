@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Client Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+        }
+        table {
+            width: 100%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+        td {
+            background-color: #f9f9f9;
+        }
+        tr:hover td {
+            background-color: #f1f1f1;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .table-header {
+            margin-top: 30px;
+            font-size: 1.5rem;
+            text-align: center;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="table-header">
+            <h2>Client Information</h2>
+        </div>
+        <a href="index.html" class="back-button">
+            <i class="fas fa-arrow-left"></i> Back to Home
+        </a>
+        <table>
+            <thead>
+                <tr>
+                    <th>Client ID</th>
+                    <th>External ID</th>
+                    <th>Company Name</th>
+                    <th>Address</th>
+                    <th>Zipcode</th>
+                    <th>City</th>
+                    <th>VAT</th>
+                    <th>Company Type</th>
+                    <th>Client Number</th>
+                    <th>Created At</th>
+                    <th>Updated At</th>
+                </tr>
+            </thead>
+            <tbody id="clientData">
+                <!-- Data will be populated by JavaScript -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        // Fetch client data from API
+        fetch('http://localhost:7070/clients') // Change this URL to the endpoint that returns client data
+            .then(response => response.json())
+            .then(data => {
+                const tbody = document.getElementById('clientData');
+                console.log(data);
+                data.forEach(client => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${client.id || 'N/A'}</td>
+                        <td>${client.externalId || 'N/A'}</td>
+                        <td>${client.companyName || 'N/A'}</td>
+                        <td>${client.address || 'N/A'}</td>
+                        <td>${client.zipcode || 'N/A'}</td>
+                        <td>${client.city || 'N/A'}</td>
+                        <td>${client.vat || 'N/A'}</td>
+                        <td>${client.companyType || 'N/A'}</td>
+                        <td>${client.clientNumber || 'N/A'}</td>
+                        <td>${client.createdAt ? new Date(client.createdAt).toLocaleDateString() : 'N/A'}</td>
+                        <td>${client.updatedAt ? new Date(client.updatedAt).toLocaleDateString() : 'N/A'}</td>
+                    `;
+                    tbody.appendChild(row);
+                });
+            })
+            .catch(error => console.error('Error fetching client data:', error));
+    </script>
+</body>
+</html>

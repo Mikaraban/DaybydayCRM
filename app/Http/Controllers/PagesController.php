@@ -8,6 +8,9 @@ use App\Models\Project;
 use App\Models\Setting;
 use App\Models\Task;
 use App\Models\User;
+use App\Models\Offer;
+use App\Models\Payment;
+use App\Models\Invoice;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use DB;
@@ -57,5 +60,31 @@ class PagesController extends Controller
             ->withTotalClients(Client::count())
             ->withSettings(Setting::first())
             ->withAbsencesToday($absences);
+    }
+
+    public function getTotals()
+    {
+        // Récupérer les données de la base de données
+        $data = [
+            'totalClients' => Client::count(),
+            'totalProjects' => Project::count(),
+            'totalTasks' => Task::count(),
+            'totalOffers' => Offer::count(),
+            'totalInvoices' => Invoice::count(),
+            'totalPayments' => Payment::sum('amount'),
+        ];
+
+        // Retourner les données au format JSON
+        return response()->json($data);
+    }
+
+    /**
+     * Redirection vers localhost:7070
+     * @return RedirectResponse
+     */
+    public function redirectToNewApp()
+    {
+        // Redirige vers localhost:7070
+        return redirect()->to('http://localhost:7070');
     }
 }

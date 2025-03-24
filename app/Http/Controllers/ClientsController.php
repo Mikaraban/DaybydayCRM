@@ -432,4 +432,6 @@ class ClientsController extends Controller
     {
         return Industry::pluck('name', 'id');
     }
+    
+
 }

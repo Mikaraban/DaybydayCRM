@@ -233,4 +233,6 @@ class InvoicesController extends Controller
         
         return view('invoices.overdue')->withInvoices($invoices);
     }
+
+    
 }
